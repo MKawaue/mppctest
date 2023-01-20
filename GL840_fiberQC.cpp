@@ -283,8 +283,15 @@ void GL840_fiberQC(TString filename,TString calib_filename){
 
   double prop_mean;
   prop_mean = h_p->GetMean();
-  int damaged_fiber;
-  damaged_fiber = h_p->Integral(1,h_p->FindBin(prop_mean*criteria));
+  int damaged_fiber = 0;
+  //damaged_fiber = h_p->Integral(1,h_p->FindBin(prop_mean*criteria));//なぜかうまく動かない......
+  for(int i=0;i<nch;i++)
+  {
+    if(prop[i]<prop_mean*criteria)
+    {
+      damaged_fiber++;
+    }
+  }
 
   std::cout << "#############################" << std::endl;
   //if(damaged_fiber == 0)
@@ -295,11 +302,13 @@ void GL840_fiberQC(TString filename,TString calib_filename){
     std::cout << "# " << damaged_fiber << " damaged fiber is found #" << std::endl;
     for(int i=0;i<nch;i++)
     {
-        //if(prop[i]<prop_mean*criteria)
+        /*if(prop[i]<prop_mean*criteria)
         {
           std::cout << "# channel " << i << " is damaged #" << std::endl;
           std::cout << prop[i] << " < " << prop_mean*criteria << " = " << prop_mean << " * " << criteria << std::endl;
-        }
+        }*/
+        std::cout << "# channel " << i << " information #" << std::endl;
+        std::cout << prop[i] << " < " << prop_mean*criteria << " = " << prop_mean << " * " << criteria << std::endl;
     }
   }
   std::cout << "#############################" << std::endl;
