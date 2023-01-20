@@ -1,6 +1,10 @@
 #!/bin/bash
+cd `dirname $0`
 INPUTFILENAME=$1
+CALIBRATIONFILENAME=$2
 source GL_convert.sh ${INPUTFILENAME}
 TEXTFILENAME=`echo ${INPUTFILENAME/csv/txt}`
 ./GL840_make_ttree ${TEXTFILENAME}
+ROOTFILENAME=`echo ${TEXTFILENAME/txt/root}`
+./GL840_fiberQC ${ROOTFILENAME} ${CALIBRATIONFILENAME}
 #root "GL840_make_ttree.c(\"${TEXTFILENAME}\")"
